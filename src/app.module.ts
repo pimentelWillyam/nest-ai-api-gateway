@@ -4,10 +4,10 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { UserModule } from './modules/user/user.module'
 import { PrismaModule } from './infra/database/prisma.module'
-import { getConfigModuleOptions } from './config/config-module.option'
+import { AppConfig } from './config/app-config'
 
 @Module({
-  imports: [ConfigModule.forRoot(getConfigModuleOptions()), UserModule, PrismaModule],
+  imports: [ConfigModule.forRoot(AppConfig.getConfigModuleOptions()), UserModule, PrismaModule],
   controllers: [AppController],
   providers: [AppService],
 })
