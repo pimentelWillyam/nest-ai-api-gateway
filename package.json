@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "nest:generate": "nest g resource ",
     "start": "cross-env NODE_ENV=prod nest start",
     "dev": "cross-env NODE_ENV=dev nest start --watch",
     "build": "nest build",
