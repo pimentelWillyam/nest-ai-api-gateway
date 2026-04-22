@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { ConfigService } from '@nestjs/config'
 import { AppModule } from './app.module'
+import { RoutesPrinterHelper } from './helpers/routes-printer.helper'
 
 export class Application {
   private static getValidationPipe() {
@@ -17,8 +18,9 @@ export class Application {
     app.useGlobalPipes(Application.getValidationPipe())
     const configService = app.get(ConfigService)
     const port = configService.get<number>('port') ?? 3000
+    const host = configService.get<string>('host') ?? 'localhost'
     await app.listen(port)
-    console.log(`Server is running on port ${port}`)
+    RoutesPrinterHelper.print(host,port)
   }
 }
 
