@@ -16,6 +16,7 @@ export class AppConfig {
     return () => ({
       port: parseInt(process.env.PORT ?? '3000', 10),
       database: { url: process.env.DATABASE_URL },
+      jwtSecret: process.env.JWT_SECRET ?? 'super-secret',
     })
   }
 
