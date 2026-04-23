@@ -34,7 +34,10 @@ export class UserController {
   }
 
   @Patch(':id')
-  update(@Param('id', ParseUUIDPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     return this.userService.update(id, updateUserDto)
   }
 
@@ -42,5 +45,28 @@ export class UserController {
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.remove(id)
+  }
+
+  @Post(':id/access/:serviceId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  addAccess(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('serviceId', ParseUUIDPipe) serviceId: string,
+  ) {
+    return this.userService.addAccess(id, serviceId)
+  }
+
+  @Delete(':id/access/:serviceId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  removeAccess(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('serviceId', ParseUUIDPipe) serviceId: string,
+  ) {
+    return this.userService.removeAccess(id, serviceId)
+  }
+
+  @Get(':id/access')
+  getAccessibleServices(@Param('id', ParseUUIDPipe) id: string) {
+    return this.userService.getAccessibleServices(id)
   }
 }
