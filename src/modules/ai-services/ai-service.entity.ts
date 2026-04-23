@@ -5,7 +5,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Index,
+  ManyToMany,
 } from 'typeorm'
+import { User } from '../user/user.entity'
 
 @Entity('ai_services')
 export class AiService {
@@ -28,4 +30,7 @@ export class AiService {
 
   @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt!: Date
+
+  @ManyToMany(() => User, (user) => user.accessibleAiServices)
+  accessibleByUsers!: User[]
 }
