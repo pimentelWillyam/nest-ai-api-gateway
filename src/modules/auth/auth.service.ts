@@ -35,7 +35,10 @@ export class AuthService {
     }
   }
 
-  private async validateUser(login: string, password: string): Promise<UserResponseDto> {
+  private async validateUser(
+    login: string,
+    password: string,
+  ): Promise<UserResponseDto> {
     const user = await this.userRepository.findOne({
       where: [{ email: login }, { login }],
       select: ['id', 'email', 'login', 'password', 'createdAt', 'updatedAt'],
