@@ -1,8 +1,13 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { User } from './user.entity'
+import { AiService } from '../ai-services/ai-service.entity'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UserResponseDto } from './dto/user-response.dto'
@@ -37,7 +42,10 @@ export class UserService {
       throw new ConflictException(`O ${field} informado já está em uso`)
     }
 
-    const hashedPassword = await bcrypt.hash(createUserDto.password, SALT_ROUNDS)
+    const hashedPassword = await bcrypt.hash(
+      createUserDto.password,
+      SALT_ROUNDS,
+    )
 
     const user = this.userRepository.create({
       email: createUserDto.email,
@@ -69,7 +77,10 @@ export class UserService {
     return toUserResponse(user)
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<UserResponseDto> {
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserResponseDto> {
     const user = await this.userRepository.findOne({
       where: { id },
     })
@@ -123,5 +134,61 @@ export class UserService {
     }
 
     await this.userRepository.remove(user)
+  }
+
+  async addAccess(userId: string, aiServiceId: string): Promise<void> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['accessibleAiServices'],
+    })
+
+    if (!user) {
+      throw new NotFoundException(`Usuário com id ${userId} não encontrado`)
+    }
+
+    const aiService = await this.userRepository.manager.findOne(AiService, {
+      where: { id: aiServiceId },
+    })
+
+    if (!aiService) {
+      throw new NotFoundException(`Serviço de IA com id ${aiServiceId} não encontrado`)
+    }
+
+    if (user.accessibleAiServices.some(service => service.id === aiServiceId)) {
+      throw new ConflictException('Usuário já tem acesso a este serviço')
+    }
+
+    user.accessibleAiServices.push(aiService)
+    await this.userRepository.save(user)
+  }
+
+  async removeAccess(userId: string, aiServiceId: string): Promise<void> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['accessibleAiServices'],
+    })
+
+    if (!user) {
+      throw new NotFoundException(`Usuário com id ${userId} não encontrado`)
+    }
+
+    user.accessibleAiServices = user.accessibleAiServices.filter(
+      service => service.id !== aiServiceId,
+    )
+
+    await this.userRepository.save(user)
+  }
+
+  async getAccessibleServices(userId: string) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['accessibleAiServices'],
+    })
+
+    if (!user) {
+      throw new NotFoundException(`Usuário com id ${userId} não encontrado`)
+    }
+
+    return user.accessibleAiServices
   }
 }
