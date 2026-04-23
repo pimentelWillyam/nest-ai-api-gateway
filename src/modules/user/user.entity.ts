@@ -5,7 +5,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Index,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm'
+import { AiService } from '../ai-services/ai-service.entity'
 
 @Entity('users')
 export class User {
@@ -28,4 +31,12 @@ export class User {
 
   @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt!: Date
+
+  @ManyToMany(() => AiService, { cascade: true })
+  @JoinTable({
+    name: 'user_ai_services',
+    joinColumn: { name: 'userId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'aiServiceId', referencedColumnName: 'id' },
+  })
+  accessibleAiServices!: AiService[]
 }
