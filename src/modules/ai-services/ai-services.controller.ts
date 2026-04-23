@@ -46,4 +46,9 @@ export class AiServicesController {
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.aiServicesService.remove(id)
   }
+
+  @Get(':id/users')
+  getUsersWithAccess(@Param('id', ParseUUIDPipe) id: string) {
+    return this.aiServicesService.getUsersWithAccess(id)
+  }
 }
