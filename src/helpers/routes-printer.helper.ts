@@ -24,9 +24,11 @@ export class RoutesPrinterHelper {
     console.log(bold(cyan(`Server is running on port ${port}`)))
     console.log(bold('Available routes:'))
 
-    this.ROUTES.forEach(route => {
+    this.ROUTES.forEach((route) => {
       const method = route.method.padEnd(6)
-      console.log(`${green(`${method}`)} ${yellow(`http://${host}:${port}${route.path}`)}`)
+      console.log(
+        `${green(`${method}`)} ${yellow(`http://${host}:${port}${route.path}`)}`,
+      )
     })
 
     console.log(magenta('Press CTRL+C to stop the server.'))
