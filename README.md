@@ -1,6 +1,6 @@
 # Boilerplate Nest API
 
-API REST com NestJS, Prisma e PostgreSQL.
+API REST com NestJS, Typeorm e PostgreSQL.
 
 ## Pré-requisitos
 
@@ -27,15 +27,9 @@ Para produção, use .env.prod (baseado em .env.prod.example).
 
 # Criar migrations
 
-yarn prisma:migrate:dev
-
 # Aplicar em produção
 
-yarn prisma:deploy
-
 # Interface visual do banco
-
-yarn prisma:studio
 
 ## Execução
 
