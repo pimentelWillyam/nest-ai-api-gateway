@@ -12,12 +12,16 @@ export class RoutesPrinterHelper {
     { method: 'GET', path: '/user/:id' },
     { method: 'PATCH', path: '/user/:id' },
     { method: 'DELETE', path: '/user/:id' },
+    { method: 'POST', path: '/user/:id/access/:serviceId' },
+    { method: 'DELETE', path: '/user/:id/access/:serviceId' },
+    { method: 'GET', path: '/user/:id/access' },
     { method: 'POST', path: '/auth/login' },
     { method: 'POST', path: '/ai-services' },
     { method: 'GET', path: '/ai-services' },
     { method: 'GET', path: '/ai-services/:id' },
     { method: 'PATCH', path: '/ai-services/:id' },
     { method: 'DELETE', path: '/ai-services/:id' },
+    { method: 'GET', path: '/ai-services/:id/users' },
   ]
 
   static print(host: string, port: number): void {
