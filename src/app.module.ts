@@ -5,6 +5,7 @@ import { AuthModule } from './modules/auth/auth.module'
 import { AiServicesModule } from './modules/ai-services/ai-services.module'
 import { AppConfig } from './config/app-config'
 import { DatabaseModule } from './infra/database/database.module'
+import { RoutesPrinterHelper } from './helpers/routes-printer.helper'
 
 @Module({
   imports: [
@@ -14,5 +15,6 @@ import { DatabaseModule } from './infra/database/database.module'
     AuthModule,
     AiServicesModule,
   ],
+  providers: [RoutesPrinterHelper]
 })
 export class AppModule {}
