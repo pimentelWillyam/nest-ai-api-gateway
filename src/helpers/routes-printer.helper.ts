@@ -1,3 +1,5 @@
+import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { bold, cyan, green, yellow, magenta } from 'picocolors'
 
 interface RouteDefinition {
@@ -5,8 +7,9 @@ interface RouteDefinition {
   path: string
 }
 
+@Injectable()
 export class RoutesPrinterHelper {
-  private static readonly ROUTES: RouteDefinition[] = [
+  private readonly ROUTES: RouteDefinition[] = [
     { method: 'POST', path: '/user' },
     { method: 'GET', path: '/user' },
     { method: 'GET', path: '/user/:id' },
@@ -24,7 +27,11 @@ export class RoutesPrinterHelper {
     { method: 'GET', path: '/ai-services/:id/users' },
   ]
 
-  static print(host: string, port: number): void {
+  constructor(private readonly configService: ConfigService) {}
+
+  print(): void {
+    const host = this.configService.get<string>('host') ?? 'localhost'
+    const port = this.configService.get<number>('port') ?? 3000
     console.log(bold(cyan(`Server is running on port ${port}`)))
     console.log(bold('Available routes:'))
 
