@@ -4,24 +4,20 @@ import { ConfigService } from '@nestjs/config'
 import { AppModule } from './app.module'
 import { RoutesPrinterHelper } from './helpers/routes-printer.helper'
 
-export class Application {
-  private static getValidationPipe() {
-    return new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    })
-  }
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule)
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true,
+    transform: true,
+  }))
 
-  static async execute() {
-    const app = await NestFactory.create(AppModule)
-    app.useGlobalPipes(Application.getValidationPipe())
-    const configService = app.get(ConfigService)
-    const port = configService.get<number>('port') ?? 3000
-    const host = configService.get<string>('host') ?? 'localhost'
-    await app.listen(port)
-    RoutesPrinterHelper.print(host,port)
-  }
+  const configService = app.get(ConfigService)
+  const routesPrinter = app.get(RoutesPrinterHelper)
+  const port = configService.get<number>('port') ?? 3000
+
+  await app.listen(port)
+  routesPrinter.print()
 }
 
-void Application.execute()
+void bootstrap()
