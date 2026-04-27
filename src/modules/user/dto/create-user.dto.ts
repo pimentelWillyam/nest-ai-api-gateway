@@ -8,6 +8,6 @@ export class CreateUserDto {
   login!: string
 
   @IsString()
-  @MinLength(6, { message: 'A senha deve ter no mínimo 6 caracteres' })
+  @MinLength(6, { message: 'The password must be at least 6 characters long' })
   password!: string
 }
