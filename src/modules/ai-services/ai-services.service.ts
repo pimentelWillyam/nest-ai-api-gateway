@@ -27,7 +27,7 @@ export class AiServicesService {
     if (existingService) {
       const field =
         existingService.slug === createAiServiceDto.slug ? 'slug' : 'url'
-      throw new ConflictException(`O ${field} informado já está em uso`)
+      throw new ConflictException(`The ${field} informed is already in use`)
     }
 
     const aiService = this.aiServiceRepository.create(createAiServiceDto)
@@ -46,7 +46,7 @@ export class AiServicesService {
     })
 
     if (!aiService) {
-      throw new NotFoundException(`Serviço de IA com id ${id} não encontrado`)
+      throw new NotFoundException(`AI Service with id ${id} not found`)
     }
 
     return aiService
@@ -58,7 +58,7 @@ export class AiServicesService {
     })
 
     if (!aiService) {
-      throw new NotFoundException(`Serviço de IA com id ${id} não encontrado`)
+      throw new NotFoundException(`AI Service with id ${id} not found`)
     }
 
     if (updateAiServiceDto.slug && updateAiServiceDto.slug !== aiService.slug) {
@@ -66,7 +66,7 @@ export class AiServicesService {
         where: { slug: updateAiServiceDto.slug },
       })
       if (slugTaken) {
-        throw new ConflictException('O slug informado já está em uso')
+        throw new ConflictException('The slug informed is already in use')
       }
     }
 
@@ -75,7 +75,7 @@ export class AiServicesService {
         where: { url: updateAiServiceDto.url },
       })
       if (urlTaken) {
-        throw new ConflictException('A url informada já está em uso')
+        throw new ConflictException('The url informed is already in use')
       }
     }
 
@@ -89,7 +89,7 @@ export class AiServicesService {
     })
 
     if (!aiService) {
-      throw new NotFoundException(`Serviço de IA com id ${id} não encontrado`)
+      throw new NotFoundException(`AI Service with id ${id} not found`)
     }
 
     return this.aiServiceRepository.remove(aiService)
@@ -102,7 +102,7 @@ export class AiServicesService {
     })
 
     if (!aiService) {
-      throw new NotFoundException(`Serviço de IA com id ${aiServiceId} não encontrado`)
+      throw new NotFoundException(`AI Service with id ${aiServiceId} not found`)
     }
 
     return aiService.accessibleByUsers
