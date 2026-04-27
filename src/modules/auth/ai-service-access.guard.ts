@@ -17,11 +17,10 @@ export class AiServiceAccessGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest()
-    const user = request.user // Assumindo que o usuário está no request via JWT
-    const aiServiceId = request.params.id // Assumindo que o ID do serviço está em params
-
+    const user = request.user
+    const aiServiceId = request.params.id
     if (!user || !aiServiceId) {
-      throw new ForbiddenException('Acesso negado')
+      throw new ForbiddenException('Acess denied')
     }
 
     const userWithAccess = await this.userRepository.findOne({
@@ -30,7 +29,7 @@ export class AiServiceAccessGuard implements CanActivate {
     })
 
     if (!userWithAccess) {
-      throw new ForbiddenException('Usuário não encontrado')
+      throw new ForbiddenException('User not found')
     }
 
     const hasAccess = userWithAccess.accessibleAiServices.some(
@@ -38,7 +37,7 @@ export class AiServiceAccessGuard implements CanActivate {
     )
 
     if (!hasAccess) {
-      throw new ForbiddenException('Acesso negado ao serviço de IA')
+      throw new ForbiddenException('Access denied to AI service')
     }
 
     return true
