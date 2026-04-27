@@ -39,7 +39,7 @@ export class UserService {
     if (existingUser) {
       const field =
         existingUser.email === createUserDto.email ? 'email' : 'login'
-      throw new ConflictException(`O ${field} informado já está em uso`)
+      throw new ConflictException(`The ${field} informed is already in use`)
     }
 
     const hashedPassword = await bcrypt.hash(
@@ -71,7 +71,7 @@ export class UserService {
     })
 
     if (!user) {
-      throw new NotFoundException(`Usuário com id ${id} não encontrado`)
+      throw new NotFoundException(`User with id ${id} not found`)
     }
 
     return toUserResponse(user)
@@ -86,7 +86,7 @@ export class UserService {
     })
 
     if (!user) {
-      throw new NotFoundException(`Usuário com id ${id} não encontrado`)
+      throw new NotFoundException(`User with id ${id} not found`)
     }
 
     if (updateUserDto.email && updateUserDto.email !== user.email) {
@@ -94,7 +94,7 @@ export class UserService {
         where: { email: updateUserDto.email },
       })
       if (emailInUse) {
-        throw new ConflictException('O email informado já está em uso')
+        throw new ConflictException('The email informed is already in use')
       }
     }
 
@@ -103,7 +103,7 @@ export class UserService {
         where: { login: updateUserDto.login },
       })
       if (loginInUse) {
-        throw new ConflictException('O login informado já está em uso')
+        throw new ConflictException('The login informed is already in use')
       }
     }
 
@@ -130,7 +130,7 @@ export class UserService {
     })
 
     if (!user) {
-      throw new NotFoundException(`Usuário com id ${id} não encontrado`)
+      throw new NotFoundException(`User with id ${id} not found`)
     }
 
     await this.userRepository.remove(user)
@@ -143,7 +143,7 @@ export class UserService {
     })
 
     if (!user) {
-      throw new NotFoundException(`Usuário com id ${userId} não encontrado`)
+      throw new NotFoundException(`User with id ${userId} not found`)
     }
 
     const aiService = await this.userRepository.manager.findOne(AiService, {
@@ -151,11 +151,11 @@ export class UserService {
     })
 
     if (!aiService) {
-      throw new NotFoundException(`Serviço de IA com id ${aiServiceId} não encontrado`)
+      throw new NotFoundException(`AI Service with id ${aiServiceId} not found`)
     }
 
     if (user.accessibleAiServices.some(service => service.id === aiServiceId)) {
-      throw new ConflictException('Usuário já tem acesso a este serviço')
+      throw new ConflictException('User already has access to this service')
     }
 
     user.accessibleAiServices.push(aiService)
@@ -169,7 +169,7 @@ export class UserService {
     })
 
     if (!user) {
-      throw new NotFoundException(`Usuário com id ${userId} não encontrado`)
+      throw new NotFoundException(`User with id ${userId} not found`)
     }
 
     user.accessibleAiServices = user.accessibleAiServices.filter(
@@ -186,7 +186,7 @@ export class UserService {
     })
 
     if (!user) {
-      throw new NotFoundException(`Usuário com id ${userId} não encontrado`)
+      throw new NotFoundException(`User with id ${userId} not found`)
     }
 
     return user.accessibleAiServices
