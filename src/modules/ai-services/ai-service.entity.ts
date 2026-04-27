@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   Index,
   ManyToMany,
+  JoinTable,
 } from 'typeorm'
 import { User } from '../user/user.entity'
 
@@ -32,5 +33,10 @@ export class AiService {
   updatedAt!: Date
 
   @ManyToMany(() => User, (user) => user.accessibleAiServices)
+  @JoinTable({
+    name: 'user_ai_services',
+    joinColumn: { name: 'aiServiceId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'userId', referencedColumnName: 'id' },
+  })
   accessibleByUsers!: User[]
 }
