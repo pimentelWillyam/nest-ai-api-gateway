@@ -14,7 +14,6 @@ import {
 import { AiServicesService } from './ai-services.service'
 import { CreateAiServiceDto } from './dto/create-ai-service.dto'
 import { UpdateAiServiceDto } from './dto/update-ai-service.dto'
-import { AiServiceAccessGuard } from '../auth/ai-service-access.guard'
 
 @Controller('ai-services')
 export class AiServicesController {
@@ -30,13 +29,11 @@ export class AiServicesController {
     return this.aiServicesService.findAll()
   }
 
-  @UseGuards(AiServiceAccessGuard)
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.aiServicesService.findOne(id)
   }
 
-  @UseGuards(AiServiceAccessGuard)
   @Patch(':id')
   update(
     @Param('id', ParseUUIDPipe) id: string,
