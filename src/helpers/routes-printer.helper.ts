@@ -10,6 +10,7 @@ interface RouteDefinition {
 @Injectable()
 export class RoutesPrinterHelper {
   private readonly ROUTES: RouteDefinition[] = [
+    { method: 'GET', path: '/health' },
     { method: 'POST', path: '/user' },
     { method: 'GET', path: '/user' },
     { method: 'GET', path: '/user/:id' },
@@ -37,9 +38,7 @@ export class RoutesPrinterHelper {
 
     this.ROUTES.forEach((route) => {
       const method = route.method.padEnd(6)
-      console.log(
-        `${green(`${method}`)} ${yellow(`http://${host}:${port}${route.path}`)}`,
-      )
+      console.log(`${green(`${method}`)} ${yellow(`http://${host}:${port}${route.path}`)}`)
     })
 
     console.log(magenta('Press CTRL+C to stop the server.'))
