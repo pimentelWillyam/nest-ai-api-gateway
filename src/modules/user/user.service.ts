@@ -156,7 +156,7 @@ export class UserService {
       throw new NotFoundException(`AI Service with id ${aiServiceId} not found`)
     }
 
-    if (user.accessibleAiServices.some(service => service.id === aiServiceId)) {
+    if (user.accessibleAiServices.some((service) => service.id === aiServiceId)) {
       throw new ConflictException('User already has access to this service')
     }
 
