@@ -32,16 +32,18 @@ export class AuthService {
       login: user.login,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
+      role: user.role,
     }
   }
 
   private async validateUser(
     login: string,
     password: string,
+    role: 'admin' | 'user',
   ): Promise<UserResponseDto> {
     const user = await this.userRepository.findOne({
-      where: [{ email: login }, { login }],
-      select: ['id', 'email', 'login', 'password', 'createdAt', 'updatedAt'],
+      where: [{ email: login }, { login }, { role }],
+      select: ['id', 'email', 'login', 'password', 'createdAt', 'updatedAt', 'role'],
     })
 
     if (!user) {
