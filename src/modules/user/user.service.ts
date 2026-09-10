@@ -114,6 +114,13 @@ export class UserService {
       user.login = updateUserDto.login
     }
 
+    if (updateUserDto.role) {
+      if (updateUserDto.role !== 'admin' && updateUserDto.role !== 'user') {
+        throw new ConflictException('Invalid role. Role must be either "admin" or "user"')
+      }
+      user.role = updateUserDto.role
+    }
+
     const updatedUser = await this.userRepository.save(user)
 
     return toUserResponse(updatedUser)
