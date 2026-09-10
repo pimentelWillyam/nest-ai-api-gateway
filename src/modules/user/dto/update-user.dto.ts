@@ -13,4 +13,8 @@ export class UpdateUserDto {
   @IsString()
   @MinLength(6, { message: 'The password must be at least 6 characters long' })
   password?: string
+
+  @IsOptional()
+  @IsString()
+  role?: 'admin' | 'user'
 }
