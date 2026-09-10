@@ -17,6 +17,7 @@ function toUserResponse(user: User): UserResponseDto {
     login: user.login,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
+    role: user.role,
   }
 }
 
