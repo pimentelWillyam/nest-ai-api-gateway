@@ -26,6 +26,9 @@ export class User {
   @Column({ type: 'varchar', select: false })
   password!: string
 
+  @Column({ type: 'varchar', length: 10, default: 'user' })
+  role!: 'admin' | 'user'
+
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt!: Date
 
