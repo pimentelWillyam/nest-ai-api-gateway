@@ -36,21 +36,22 @@ export class UserService {
       where: [{ email: createUserDto.email }, { login: createUserDto.login }],
     })
 
+    if (createUserDto.role !== 'admin' && createUserDto.role !== 'user') {
+      throw new ConflictException('Invalid role. Role must be either "admin" or "user"')
+    }
+
     if (existingUser) {
-      const field =
-        existingUser.email === createUserDto.email ? 'email' : 'login'
+      const field = existingUser.email === createUserDto.email ? 'email' : 'login'
       throw new ConflictException(`The ${field} informed is already in use`)
     }
 
-    const hashedPassword = await bcrypt.hash(
-      createUserDto.password,
-      SALT_ROUNDS,
-    )
+    const hashedPassword = await bcrypt.hash(createUserDto.password, SALT_ROUNDS)
 
     const user = this.userRepository.create({
       email: createUserDto.email,
       login: createUserDto.login,
       password: hashedPassword,
+      role: createUserDto.role,
     })
 
     await this.userRepository.save(user)
@@ -173,7 +174,7 @@ export class UserService {
     }
 
     user.accessibleAiServices = user.accessibleAiServices.filter(
-      service => service.id !== aiServiceId,
+      (service) => service.id !== aiServiceId,
     )
 
     await this.userRepository.save(user)
