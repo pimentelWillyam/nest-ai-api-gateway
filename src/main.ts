@@ -18,6 +18,8 @@ async function bootstrap() {
   const routesPrinter = app.get(RoutesPrinterHelper)
   const port = configService.get<number>('port') ?? 3000
 
+  app.enableCors()
+
   await app.listen(port)
   routesPrinter.print()
 }
