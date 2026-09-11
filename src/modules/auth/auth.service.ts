@@ -36,13 +36,9 @@ export class AuthService {
     }
   }
 
-  private async validateUser(
-    login: string,
-    password: string,
-    role: 'admin' | 'user',
-  ): Promise<UserResponseDto> {
+  private async validateUser(login: string, password: string): Promise<UserResponseDto> {
     const user = await this.userRepository.findOne({
-      where: [{ email: login }, { login }, { role }],
+      where: [{ email: login }, { login }],
       select: ['id', 'email', 'login', 'password', 'createdAt', 'updatedAt', 'role'],
     })
 
@@ -59,7 +55,7 @@ export class AuthService {
   }
 
   async login(loginDto: LoginAuthDto) {
-    const user = await this.validateUser(loginDto.login, loginDto.password, loginDto.role)
+    const user = await this.validateUser(loginDto.login, loginDto.password)
     const payload: JwtPayload = { sub: user.id, login: user.login }
 
     return {
